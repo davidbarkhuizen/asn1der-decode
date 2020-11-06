@@ -125,5 +125,10 @@ describe('getStandAloneBitsValue',
         .to
         .equal(1); 
     });
+    it('getStandAloneBitsValue(128, [8,7,6,5]) == 32', () => { 
+      expect(getStandAloneBitsValue(128, [8,7,6,5]))
+        .to
+        .equal(8); 
+    });
   }
 ); 
