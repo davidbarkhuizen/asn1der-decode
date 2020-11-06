@@ -1,4 +1,4 @@
-import { parse, bitMask } from './asn1der';
+import { parse, bitMask, bitsAreSet } from './asn1der';
 import { expect } from 'chai';
 import 'mocha';
 
@@ -74,9 +74,24 @@ describe('bitMask',
         .equal(128); 
     });
     it('mask([1,8]) == 129', () => { 
-      expect(bitMask([8]))
+      expect(bitMask([1,8]))
         .to
         .equal(129); 
     });
+  }
+);
+
+describe('bitsAreSet', 
+  () => { 
+    it('bitsAreSet(1, [1]) == true', () => { 
+      expect(bitsAreSet(1, [1]))
+        .to
+        .equal(true); 
+    }); 
+    it('bitsAreSet(1, [2]) == false', () => { 
+      expect(bitsAreSet(1, [2]))
+        .to
+        .equal(false); 
+    }); 
   }
 );
