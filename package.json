@@ -2,10 +2,10 @@
   "name": "asn1der",
   "version": "0.0.1",
   "description": "parse ASN.1 DER structures",
-  "main": "index.js",
+  "main": "",
   "scripts": {
     "dev": "tsc && node dist/asn1der.js",
-    "test": "test"
+    "test": "mocha -r ts-node/register src/**/*.spec.ts"
   },
   "repository": {
     "type": "git",
@@ -19,6 +19,10 @@
   "author": "david barkhuizen",
   "license": "UNLICENSED",
   "devDependencies": {
+    "@types/mocha": "^8.0.3",
+    "chai": "^4.2.0",
+    "mocha": "^8.2.1",
+    "ts-node": "^9.0.0",
     "typescript": "^4.0.5"
   }
 }

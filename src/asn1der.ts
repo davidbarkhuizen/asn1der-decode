@@ -1,1 +1,6 @@
-console.log('yo');
+export const parse = (
+    derHex
+): any => {
+
+    return {};
+};
