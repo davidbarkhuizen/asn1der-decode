@@ -22,6 +22,9 @@ export const bitsAreSet = (b: number, bits: Array<number>): boolean => {
     return (b & mask) == mask;
 }
 
+export const getStandAloneBitsValue = (b: number, bits: Array<number>) =>
+    (b & bitMask(bits)) >> (Math.min(...bits) - 1);
+
 export const parse = (
     derHex: string
 ): any => {

@@ -1,4 +1,4 @@
-import { parse, bitMask, bitsAreSet } from './asn1der';
+import { parse, bitMask, bitsAreSet, getStandAloneBitsValue } from './asn1der';
 import { expect } from 'chai';
 import 'mocha';
 
@@ -103,6 +103,27 @@ describe('bitsAreSet',
         .to
         .equal(true); 
     }); 
-
   }
 );
+
+describe('getStandAloneBitsValue', 
+  () => { 
+    it('getStandAloneBitsValue(255, [1]) == 1', () => { 
+      expect(getStandAloneBitsValue(255, [1]))
+        .to
+        .equal(1); 
+    });
+
+    it('getStandAloneBitsValue(128, [1]) == 0', () => { 
+      expect(getStandAloneBitsValue(128, [1]))
+        .to
+        .equal(0); 
+    });
+
+    it('getStandAloneBitsValue(128, [8]) == 1', () => { 
+      expect(getStandAloneBitsValue(128, [8]))
+        .to
+        .equal(1); 
+    });
+  }
+); 
