@@ -128,7 +128,7 @@ describe('getStandAloneBitsValue',
 describe('parse x509 google HW key attestation leaf cert', 
   () => { 
     it('should return true', () => { 
-      expect(JSON.stringify(parseDER(referenceX509Hex)))
+      expect(JSON.stringify(parseDER(Buffer.from(referenceX509Hex, 'hex'))))
         .to
         .equal(JSON.stringify(referenceX509Parsed)); 
   }); 
