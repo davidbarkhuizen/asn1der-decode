@@ -5,11 +5,15 @@ export const bitMask = (bits: Array<number>): Number => {
 
     let byteMask = Buffer.from('00', 'hex').readUInt8(0);
 
-    bits.forEach(bitNumber => {
-        const bitMask = one << bitNumber - 1;
-        byteMask = byteMask || bitMask;
-    })
-    
+    for (const bitNumber of bits) {
+        console.log(`bitNumber ${bitNumber}`);
+        const bitMask = one << (bitNumber - 1);
+        console.log(`bitMask ${bitMask}`);
+        byteMask = byteMask | bitMask;
+    }
+
+    console.log(`final mask: ${byteMask}`);
+   
     return byteMask;
 };
 
@@ -24,3 +28,5 @@ export const parse = (
 
     return {};
 };
+
+bitMask([1,2]);

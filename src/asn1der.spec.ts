@@ -32,6 +32,12 @@ describe('bitMask',
         .equal(2); 
     }); 
 
+    it('mask([1,2]) == 3', () => { 
+      expect(bitMask([1,2]))
+        .to
+        .equal(3); 
+    }); 
+
     it('mask([3]) == 4', () => { 
       expect(bitMask([3]))
         .to
@@ -67,11 +73,10 @@ describe('bitMask',
         .to
         .equal(128); 
     });
-
-    // it('mask([1,8]) == 129', () => { 
-    //   expect(bitMask([8]))
-    //     .to
-    //     .equal(129); 
-    // });
+    it('mask([1,8]) == 129', () => { 
+      expect(bitMask([8]))
+        .to
+        .equal(129); 
+    });
   }
 );
