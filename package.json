@@ -1,0 +1,24 @@
+{
+  "name": "asn1der",
+  "version": "0.0.1",
+  "description": "parse ASN.1 DER structures",
+  "main": "index.js",
+  "scripts": {
+    "dev": "tsc && node dist/asn1der.js",
+    "test": "test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "github.com:davidbarkhuizen/asn1der.git"
+  },
+  "keywords": [
+    "asn1",
+    "der",
+    "tlv"
+  ],
+  "author": "david barkhuizen",
+  "license": "UNLICENSED",
+  "devDependencies": {
+    "typescript": "^4.0.5"
+  }
+}
