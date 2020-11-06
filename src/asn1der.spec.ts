@@ -1,4 +1,4 @@
-import { parse } from '../src/asn1der';
+import { parse, mask } from './asn1der';
 import { expect } from 'chai';
 import 'mocha';
 
@@ -16,3 +16,56 @@ describe('parse x509 google HW key attestation leaf cert',
         .equal(JSON.stringify(referenceX509Parsed)); 
   }); 
 });
+
+describe('mask', 
+  () => { 
+
+    it('mask([1]) == 1', () => { 
+      expect(mask([1]))
+        .to
+        .equal(1); 
+    }); 
+
+    it('mask([2]) == 2', () => { 
+      expect(mask([2]))
+        .to
+        .equal(2); 
+    }); 
+
+    it('mask([3]) == 4', () => { 
+      expect(mask([3]))
+        .to
+        .equal(4); 
+    }); 
+
+    it('mask([4]) == 8', () => { 
+      expect(mask([4]))
+        .to
+        .equal(8); 
+    }); 
+
+    it('mask([5]) == 16', () => { 
+      expect(mask([5]))
+        .to
+        .equal(16); 
+    }); 
+
+    it('mask([6]) == 32', () => { 
+      expect(mask([6]))
+        .to
+        .equal(32); 
+    }); 
+
+    it('mask([7]) == 64', () => { 
+      expect(mask([7]))
+        .to
+        .equal(64); 
+    }); 
+
+    it('mask([8]) == 128', () => { 
+      expect(mask([8]))
+        .to
+        .equal(128); 
+    }); 
+  }
+);
