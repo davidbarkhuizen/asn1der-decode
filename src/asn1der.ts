@@ -71,7 +71,7 @@ export const parseIdentifer = (raw: Buffer): {
 
     const tagDescription = (asn1TagDescription.has(tagNumber))
         ? asn1TagDescription.get(tagNumber)
-        : '?';
+        : null;
     
     //console.log(`final tag number: ${tagNumber} => ${tagDescription}`);
 
@@ -132,10 +132,14 @@ export const parseDER = (
 
     const { identifier, lengthValueRemainder } = parseIdentifer(der);
 
-    console.log(`${'  '.repeat(indent)} ${identifier.classDescription
-    } ${identifier.constructionDescription
-    } #${identifier.tagNumber
-    } (${identifier.tagDescription})`);
+    // console.log(`${'  '.repeat(indent)} ${identifier.classDescription
+    // } ${identifier.constructionDescription
+    // } #${identifier.tagNumber
+    // } (${identifier.tagDescription})`);
+
+    const label = (identifier.tagDescription != null)
+        ? identifier.tagDescription
+        : `[${identifier.tagNumber}]`;
 
     // parse length
 
@@ -143,6 +147,8 @@ export const parseDER = (
 
     const content = contentRemainder.subarray(0, length);
     const residualRemainder = contentRemainder.subarray(length);
+
+    console.log(`${'  '.repeat(indent)}${label}  ${content.toString('hex').substring(0, 60)}`);
 
     // console.log(`content: ${content.toString('hex')}`);
     
