@@ -7,9 +7,22 @@ export const asn1ClassDescription = new Map<Asn1Class, string>([
     [Asn1Class.Private, 'Private'],
 ]);
 
+export const asn1ClassShortDesc = new Map<Asn1Class, string>([
+    [Asn1Class.Universal, 'U'],
+    [Asn1Class.Application, 'A'],
+    [Asn1Class.ContextSpecific, 'C'],
+    [Asn1Class.Private, 'P'],
+]);
+
+
 export const asn1ConstructionDescription = new Map<Asn1Construction, string>([
     [Asn1Construction.Primitive, 'Primitive'],
     [Asn1Construction.Constructed, 'Constructed'],
+]);
+
+export const asn1ConstructionShortDesc = new Map<Asn1Construction, string>([
+    [Asn1Construction.Primitive, 'P'],
+    [Asn1Construction.Constructed, 'C'],
 ]);
 
 export const asn1TagDescription = new Map<Asn1Tag, string>([

@@ -1,6 +1,6 @@
 import { bitsAreSet, getStandAloneBitsValue } from "./bitwise";
 import { Asn1Construction, Asn1Tag, IAsn1Identifier } from "./model";
-import { asn1ClassDescription, asn1ConstructionDescription, asn1TagDescription } from "./model.description";
+import { asn1ClassShortDesc, asn1ConstructionShortDesc, asn1TagDescription } from "./model.description";
 
 export const parseIdentifer = (raw: Buffer): {
     identifier: IAsn1Identifier,
@@ -11,15 +11,15 @@ export const parseIdentifer = (raw: Buffer): {
     //console.log(`b0: ${b0.toString()}d 0x${b0.toString(16)} ${b0.toString(2).padStart(8, '0')}b`);
 
     const klass = getStandAloneBitsValue(b0, [7,8]);
-    const classDescription = asn1ClassDescription.get(klass);
+    const classDescription = asn1ClassShortDesc.get(klass);
     //console.log(`class ${classDescription}`);
 
     const construction = getStandAloneBitsValue(b0, [6]);
-    const constructionDescription = asn1ConstructionDescription.get(construction);
+    const constructionDescription = asn1ConstructionShortDesc.get(construction);
     //console.log(`construction ${constructionDescription}`);
 
     const initialOctetTagNumber = getStandAloneBitsValue(b0, [1,2,3,4,5]);
-    const initialOctetTagDescription = asn1TagDescription.get(initialOctetTagNumber);
+    //const initialOctetTagDescription = asn1TagDescription.get(initialOctetTagNumber);
     //console.log(`initial tag: ${initialOctetTagNumber} => ${initialOctetTagDescription}`);
 
     let remainder = raw.subarray(1);
@@ -95,7 +95,6 @@ export const parseLength = (
     length: number,
     contentRemainder: Buffer
 } => {
-
     const firstLengthByte = raw.readUInt8(0);
     let remainder = raw.subarray(1);
 
@@ -129,19 +128,21 @@ export const parseDER = (
     indent = 0
 ): Record<string, unknown> => {
 
+    // console.log(der.toString('hex').substring(0, 20), "...");
+
     const { identifier, lengthValueRemainder } = parseIdentifer(der);
 
-    console.log(`${' '.repeat(indent)}- ${identifier.classDescription
-    }: ${identifier.constructionDescription
-    }, tag number ${identifier.tagNumber
-    }, (${identifier.tagDescription})`);
+    console.log(`${'  '.repeat(indent)} ${identifier.classDescription
+    } ${identifier.constructionDescription
+    } #${identifier.tagNumber
+    } (${identifier.tagDescription})`);
 
     // parse length
 
     const { length, contentRemainder } = parseLength(lengthValueRemainder);
 
     const content = contentRemainder.subarray(0, length);
-    const residualRemainder = lengthValueRemainder.subarray(length);
+    const residualRemainder = contentRemainder.subarray(length);
 
     // console.log(`content: ${content.toString('hex')}`);
     
