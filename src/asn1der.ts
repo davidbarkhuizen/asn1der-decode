@@ -2,7 +2,7 @@ import { bitsAreSet, getStandAloneBitsValue } from "./bitwise";
 import { Asn1Construction, Asn1Tag, IAsn1Identifier } from "./model";
 import { asn1ClassDescription, asn1ConstructionDescription, asn1TagDescription } from "./model.description";
 
-export const parseIdentiferBytes = (raw: Buffer): {
+export const parseIdentifer = (raw: Buffer): {
     identifier: IAsn1Identifier,
     lengthValueRemainder: Buffer
 } => {
@@ -89,20 +89,15 @@ export const parseIdentiferBytes = (raw: Buffer): {
     };
 };
 
-export const parseDER = (
-    der: Buffer
-): Record<string, unknown> => {
+export const parseLength = (
+    raw: Buffer
+): {
+    length: number,
+    contentRemainder: Buffer
+} => {
 
-    console.log(`raw: ${der.toString('hex')}`);
-
-    const { identifier, lengthValueRemainder } = parseIdentiferBytes(der);
-
-    console.log(`identifier ${identifier}`);
-
-    // parse length
-
-    const firstLengthByte = lengthValueRemainder.readUInt8(0);
-    let remainder = lengthValueRemainder.subarray(1);
+    const firstLengthByte = raw.readUInt8(0);
+    let remainder = raw.subarray(1);
 
     const isLongFormLength =  bitsAreSet(firstLengthByte, [8]);
     console.log(isLongFormLength ? 'long form length' : 'short form length');
@@ -126,13 +121,30 @@ export const parseDER = (
 
     console.log(`length ${length}`);
 
+    return { length, contentRemainder: remainder };
+};
+
+export const parseDER = (
+    der: Buffer
+): Record<string, unknown> => {
+
+    console.log(`raw DER hex: ${der.toString('hex')}`);
+
+    const { identifier, lengthValueRemainder } = parseIdentifer(der);
+
+    console.log(`identifier ${identifier}`);
+
     console.log(`class: ${identifier.classDescription
     }, construction: ${identifier.constructionDescription
     }, tag number: ${identifier.tagNumber
     }, tag: ${identifier.tagDescription}`);
 
-    const content = remainder.subarray(0, length);
-    remainder = remainder.subarray(length);
+    // parse length
+
+    const { length, contentRemainder } = parseLength(lengthValueRemainder);
+
+    const content = contentRemainder.subarray(0, length);
+    const residualRemainder = lengthValueRemainder.subarray(length);
 
     console.log(`content: ${content.toString('hex')}`);
     
@@ -146,10 +158,10 @@ export const parseDER = (
         }
     }
 
-    if (remainder.length > 0) {
+    if (residualRemainder.length > 0) {
         console.log('parsing next item in current constructed element');
         console.log('-'.repeat(80));
-        parseDER(remainder);
+        parseDER(residualRemainder);
     }
 
     return {};
