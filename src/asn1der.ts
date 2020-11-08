@@ -1,12 +1,13 @@
 import { bitsAreSet, getStandAloneBitsValue } from "./bitwise";
+import { Asn1Construction, Asn1Tag, IAsn1Identifier } from "./model";
+import { asn1ClassDescription, asn1ConstructionDescription, asn1TagDescription } from "./model.description";
 
-export const parseDER = (
-    der: Buffer
-): Record<string, unknown> => {
+export const parseIdentiferBytes = (raw: Buffer): {
+    identifier: IAsn1Identifier,
+    lengthValueRemainder: Buffer
+} => {
 
-    console.log(`raw: ${der.toString('hex')}`);
-
-    const b0 = der.readUInt8(0);
+    const b0 = raw.readUInt8(0);
     console.log(`b0: ${b0.toString()}d 0x${b0.toString(16)} ${b0.toString(2).padStart(8, '0')}b`);
 
     const klass = getStandAloneBitsValue(b0, [7,8]);
@@ -21,7 +22,7 @@ export const parseDER = (
     const initialOctetTagDescription = asn1TagDescription.get(initialOctetTagNumber);
     console.log(`initial tag: ${initialOctetTagNumber} => ${initialOctetTagDescription}`);
 
-    let remainder = der.subarray(1);
+    let remainder = raw.subarray(1);
 
     const isLongFormTag = initialOctetTagNumber == 31;
 
@@ -45,9 +46,6 @@ export const parseDER = (
         console.log(`tagBytes.length: ${tagBytes.length}`);
 
         remainder = remainder.subarray(tagByteCount);
-
-        // console.log('binary', [...tagBytes].map(it => it.toString(2).padStart(8, '0')).join());
-        // console.log('hex', tagBytes.toString('hex'));
 
         const sevenBitStrings = [...tagBytes]
             .map(it => it.toString(2))
@@ -77,10 +75,34 @@ export const parseDER = (
     
     console.log(`final tag number: ${tagNumber} => ${tagDescription}`);
 
+    return {
+        identifier:{
+            raw: Buffer.from([b0]),
+            class: klass,
+            classDescription,
+            construction,
+            constructionDescription,
+            tagNumber,
+            tagDescription
+        },
+        lengthValueRemainder: remainder
+    };
+};
+
+export const parseDER = (
+    der: Buffer
+): Record<string, unknown> => {
+
+    console.log(`raw: ${der.toString('hex')}`);
+
+    const { identifier, lengthValueRemainder } = parseIdentiferBytes(der);
+
+    console.log(`identifier ${identifier}`);
+
     // parse length
 
-    const firstLengthByte = remainder.readUInt8(0);
-    remainder = remainder.subarray(1);
+    const firstLengthByte = lengthValueRemainder.readUInt8(0);
+    let remainder = lengthValueRemainder.subarray(1);
 
     const isLongFormLength =  bitsAreSet(firstLengthByte, [8]);
     console.log(isLongFormLength ? 'long form length' : 'short form length');
@@ -104,22 +126,22 @@ export const parseDER = (
 
     console.log(`length ${length}`);
 
-    console.log(`class: ${classDescription
-    }, construction: ${constructionDescription
-    }, tag number: ${tagNumber
-    }, tag: ${tagDescription}`);
+    console.log(`class: ${identifier.classDescription
+    }, construction: ${identifier.constructionDescription
+    }, tag number: ${identifier.tagNumber
+    }, tag: ${identifier.tagDescription}`);
 
     const content = remainder.subarray(0, length);
     remainder = remainder.subarray(length);
 
     console.log(`content: ${content.toString('hex')}`);
     
-    if (construction == Asn1Construction.Constructed) {
+    if (identifier.construction == Asn1Construction.Constructed) {
         console.log('parsing children of constructed element');
         console.log('='.repeat(80));
         parseDER(content);
     } else {
-        if (tagNumber == Asn1Tag.ObjectIdentifier) {
+        if (identifier.tagNumber == Asn1Tag.ObjectIdentifier) {
             //parseOID(contentHex.hexToUBytes())
         }
     }
