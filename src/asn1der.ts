@@ -7,7 +7,7 @@ export const parseDER = (
     console.log(`raw: ${der.toString('hex')}`);
 
     const b0 = der.readUInt8(0);
-    console.log(`b0: ${b0.toString()}d 0x${b0.toString(16)} ${b0.toString(2).padStart(8, '0')}b`)
+    console.log(`b0: ${b0.toString()}d 0x${b0.toString(16)} ${b0.toString(2).padStart(8, '0')}b`);
 
     const klass = getStandAloneBitsValue(b0, [7,8]);
     const classDescription = asn1ClassDescription.get(klass);
@@ -30,12 +30,12 @@ export const parseDER = (
     let longFormTagNumber = 0;
     if (isLongFormTag) {
 
-        let tagByteCount = 1
+        let tagByteCount = 1;
         while (bitsAreSet(remainder.readUInt8(tagByteCount - 1), [8])) {
             tagByteCount = tagByteCount + 1;
 
             if (tagByteCount > remainder.length) {
-                throw 'badly encoded long-form tag, infinite subsequent tag bytes'
+                throw 'badly encoded long-form tag, infinite subsequent tag bytes';
             }
         }
 
@@ -89,7 +89,7 @@ export const parseDER = (
     if (isLongFormLength) {
 
         const numberOfSubsequentLengthBytes = getStandAloneBitsValue(firstLengthByte, [1,2,3,4,5,6,7]);
-        console.log(`content length is coded on ${numberOfSubsequentLengthBytes} subsequent bytes`)
+        console.log(`content length is coded on ${numberOfSubsequentLengthBytes} subsequent bytes`);
 
         const lengthBytes = remainder.subarray(0, numberOfSubsequentLengthBytes);
         remainder = remainder.subarray(numberOfSubsequentLengthBytes);

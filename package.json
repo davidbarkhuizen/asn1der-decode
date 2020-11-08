@@ -6,7 +6,8 @@
   "scripts": {
     "dev": "tsc && node dist/asn1der.js",
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
-    "lint": "eslint . --ext .ts"
+    "lint": "eslint . --ext .ts",
+    "lint-fix": "eslint . --ext .ts --fix"
   },
   "repository": {
     "type": "git",

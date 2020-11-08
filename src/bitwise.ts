@@ -19,7 +19,7 @@ export const bitsAreSet = (b: number, bits: Array<number>): boolean => {
     const mask = bitMask(bits);
     console.log(`mask ${mask}`);
     return (b & mask) == mask;
-}
+};
 
 export const getStandAloneBitsValue = (b: number, bits: Array<number>): number =>
     (b & bitMask(bits)) >> (Math.min(...bits) - 1);
