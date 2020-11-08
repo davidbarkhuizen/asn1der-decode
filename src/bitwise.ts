@@ -14,10 +14,10 @@ export const bitMask = (bits: Array<number>): number => {
 
 export const bitsAreSet = (b: number, bits: Array<number>): boolean => {
 
-    console.log(`bitsAreSet ${b} ${bits}`);
+    //console.log(`bitsAreSet ${b} ${bits}`);
 
     const mask = bitMask(bits);
-    console.log(`mask ${mask}`);
+    //console.log(`mask ${mask}`);
     return (b & mask) == mask;
 };
 
