@@ -8,9 +8,9 @@ const referenceX509Parsed = {
 
 };
 
-describe('basic parsing of a valid X.509 cert should succeed, returning a single node', 
+describe('asn1der', 
   () => { 
-    it('should return true', () => { 
+    it('basic parsing of a valid X.509 cert should succeed, returning a single node', () => { 
 
       const parsedNodes = parseDER(Buffer.from(referenceX509Hex, 'hex'));
       const node = parsedNodes[0];
@@ -22,4 +22,20 @@ describe('basic parsing of a valid X.509 cert should succeed, returning a single
         .to
         .equal(1); 
   }); 
+
+  it('it should be able to instruct a node to parse its content', () => { 
+
+    const parsedNodes = parseDER(Buffer.from(referenceX509Hex, 'hex'));
+    const root = parsedNodes[0];
+
+    // softwareEnforced - AttestationApplicationId
+    root.get('6.#709.0').parseContent();
+    
+    root.summary().forEach(it => console.log(it));
+
+    expect(1)
+      .to
+      .equal(1); 
+}); 
+
 });

@@ -110,8 +110,7 @@ export const parseLength = (
 };
 
 export const parseDER = (
-    der: Buffer,
-    indent = 0
+    der: Buffer
 ): Array<Asn1Node> => {
 
     // console.log(der.toString('hex').substring(0, 20), "...");
@@ -143,11 +142,11 @@ export const parseDER = (
     // console.log(`content: ${content.toString('hex')}`);
     
     const children = (identifier.construction == Asn1Construction.Constructed)
-        ? parseDER(content, indent + 1)
+        ? parseDER(content)
         : [];
 
     const peers = (residualRemainder.length > 0)
-        ? parseDER(residualRemainder, indent)
+        ? parseDER(residualRemainder)
         : [];
 
     const self = new Asn1Node(

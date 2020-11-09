@@ -1,13 +1,14 @@
+import { parseDER } from "../asn1der";
 import { asn1TagDescription } from "./descriptions";
 import { IAsn1Identifier } from "./interfaces";
 
 export class Asn1Node {
 
-    raw: Buffer;
-    identifier: IAsn1Identifier;
-    length: number;
-    content: Buffer;
-    children: Array<Asn1Node>;
+    public raw: Buffer;
+    public identifier: IAsn1Identifier;
+    public length: number;
+    public content: Buffer;
+    public children: Array<Asn1Node>;
 
     constructor(
         raw: Buffer,
@@ -54,5 +55,30 @@ export class Asn1Node {
             this.toString(),
             ...childrenReport.map(line => ' '.repeat(indent) + line)
         ];
+    }
+
+    public getChildAtZIndex = (zindex: number): Asn1Node =>
+        this.children[zindex]
+
+    public getChildWithTagNumber = (tagNumber: number): Asn1Node =>
+        this.children.find(it => it.identifier.tagNumber == tagNumber);
+
+    public get = (path: string): Asn1Node => {
+
+        const steps = path.split('.');
+
+        const firstStep = steps[0];
+
+        const firstStepTarget = (firstStep.startsWith('#'))
+            ? this.getChildWithTagNumber(parseInt(firstStep.substring(1)))
+            : this.getChildAtZIndex(parseInt(firstStep));
+
+        return (steps.length == 1)
+            ? firstStepTarget
+            : firstStepTarget.get(steps.slice(1).join('.'));
+    }
+
+    public parseContent = (): void => {
+        this.children = parseDER(this.content);
     }
 }
