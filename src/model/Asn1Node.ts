@@ -5,6 +5,29 @@ import { IAsn1Identifier } from "./interfaces";
 
 import { x509OIDs } from './oid';
 
+// 'YYMMDD 000000 Z'
+export const parseUtcString = (s: string): Date => {
+
+    const yyyy = 2000 + parseInt(s.substring(0, 2));
+    const mm = parseInt(s.substring(2, 4));
+    const dd = parseInt(s.substring(4, 6));
+
+    const hours = parseInt(s.substring(6, 8));
+    const mins = parseInt(s.substring(8, 10));
+    const seconds = parseInt(s.substring(10, 12));
+
+    console.log(`${yyyy}/${mm}/${dd} ${hours}:${mins}:${seconds}`);
+
+    return new Date(Date.UTC(
+        yyyy,
+        mm,
+        dd,
+        hours,
+        mins,
+        seconds
+    ));
+};
+
 export class Asn1Node {
 
     public raw: Buffer;
@@ -57,8 +80,10 @@ export class Asn1Node {
             : (this.identifier.tagNumber == Asn1Tag.UTF8String)
                 ? this.content.toString('utf-8')
                 : (this.identifier.tagNumber == Asn1Tag.PrintableString)
-                    ?  this.content.toString('ascii')
-                    : '0x' + cleanContentHex;
+                    ? this.content.toString('ascii')
+                    : (this.identifier.tagNumber == Asn1Tag.UTCTime)
+                        ? parseUtcString(this.content.toString('ascii')).toString()
+                        : '0x' + cleanContentHex;
         
         return `[${label}] - ${contentStr}`;
     }
