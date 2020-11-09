@@ -1,6 +1,6 @@
 import { parseDER, parseOID } from "../asn1der";
 import { asn1TagDescription } from "./descriptions";
-import { Asn1Tag } from "./enums";
+import { Asn1Class, Asn1Tag } from "./enums";
 import { IAsn1Identifier } from "./interfaces";
 
 import { x509OIDs } from './oid';
@@ -50,11 +50,26 @@ export class Asn1Node {
         this.children = children;
     }
 
-    public toString = (): string => {
+    public toString = (tagNumberLookup: Map<number, string>): string => {
 
-        const tagDescription = asn1TagDescription.has(this.identifier.tagNumber)
-            ? asn1TagDescription.get(this.identifier.tagNumber)
-            : null;
+        const tagNumberLookupIsRelevant = [
+            Asn1Class.Application, 
+            Asn1Class.ContextSpecific, 
+            Asn1Class.Private
+        ].includes(this.identifier.class);
+
+        console.log(`tag number: ${this.identifier.tagNumber}`);
+        console.log(`lookup has: ${tagNumberLookup?.has(this.identifier.tagNumber)}`);
+
+        const tagDescription = (
+                (tagNumberLookup != null) 
+                && (tagNumberLookup.has(this.identifier.tagNumber))
+                && tagNumberLookupIsRelevant
+            )
+            ? tagNumberLookup.get(this.identifier.tagNumber) + ` [${this.identifier.tagNumber}]`
+            : (asn1TagDescription.has(this.identifier.tagNumber))
+                ? asn1TagDescription.get(this.identifier.tagNumber)
+                : null;
 
         const label = (tagDescription != null)
             ? tagDescription
@@ -68,7 +83,7 @@ export class Asn1Node {
             ? x509OIDs.get(oidStr)
             : 'unknown OID';
 
-        const contentHex = this.content.toString('hex');
+        const contentHex = this.getContentHex();
 
         const hexLimit = 20;
         const cleanContentHex = (contentHex.length > hexLimit)
@@ -78,31 +93,52 @@ export class Asn1Node {
         const contentStr = (this.identifier.tagNumber == Asn1Tag.ObjectIdentifier)
             ? `${oidStr} (${oidDescription})`
             : (this.identifier.tagNumber == Asn1Tag.UTF8String)
-                ? this.content.toString('utf-8')
+                ? this.getContentUTF8()
                 : (this.identifier.tagNumber == Asn1Tag.PrintableString)
-                    ? this.content.toString('ascii')
+                    ? this.getContentPrintableString()
                     : (this.identifier.tagNumber == Asn1Tag.UTCTime)
-                        ? parseUtcString(this.content.toString('ascii')).toString()
+                        ? this.getContentUTCTime().toString()
                         : (this.identifier.tagNumber == Asn1Tag.Integer)
-                            ? parseInt(contentHex, 16).toString()
+                            ? this.getContentInteger().toString()
                             : (this.identifier.tagNumber == Asn1Tag.IA5String)
-                                ? this.content.toString('ascii')
+                                ? this.getContentIA5String()
                                 : (this.identifier.tagNumber == Asn1Tag.Boolean)
-                                    ? !(this.content.readInt8(0) == 0)
-                                    : '0x' + cleanContentHex;
+                                    ? this.getContentBoolean()
+                                    : cleanContentHex;
         
-        return `[${label}] - ${contentStr}`;
+        return `${label} - ${contentStr}`;
     }
 
-    public summary = (indent = 4): Array<string> => {
+    public getContentUTF8 = (): string =>
+        this.content.toString('utf-8');
+
+    public getContentPrintableString = (): string =>
+        this.content.toString('ascii');
+
+    public getContentUTCTime = (): Date =>
+        parseUtcString(this.content.toString('ascii'));
+
+    public getContentIA5String = (): string =>
+        this.content.toString('ascii');
+
+    public getContentBoolean = (): boolean =>
+        !(this.content.readInt8(0) == 0);
+
+    public getContentHex = (): string =>
+        this.content.toString('hex');
+
+    public getContentInteger = (): number =>
+        parseInt(this.content.toString('hex'), 16);
+
+    public summary = (indent: number, tagNumberLookup: Map<number, string>): Array<string> => {
       
         const childrenReport = [];
 
         this.children
-            .forEach(child => childrenReport.push(...child.summary()));
+            .forEach(child => childrenReport.push(...child.summary(indent, tagNumberLookup)));
         
         return [
-            this.toString(),
+            this.toString(tagNumberLookup),
             ...childrenReport.map(line => ' '.repeat(indent) + line)
         ];
     }

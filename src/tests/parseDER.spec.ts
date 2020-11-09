@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import 'mocha';
 import { parseDER, pemToDER } from '../asn1der';
+import { authorizationListLookup } from '../model/google';
 
 const refPEM = `-----BEGIN CERTIFICATE-----
 MIICEjCCAXsCAg36MA0GCSqGSIb3DQEBBQUAMIGbMQswCQYDVQQGEwJKUDEOMAwG
@@ -85,7 +86,7 @@ describe('asn1der',
         const node = parsedNodes[0];
 
         //console.log(node.toString());
-        node.summary().forEach(it => console.log(it));
+        node.summary(4, null).forEach(it => console.log(it));
 
         expect(parsedNodes.length)
             .to
@@ -98,7 +99,7 @@ describe('asn1der',
         const node = parsedNodes[0];
 
         //console.log(node.toString());
-        node.summary().forEach(it => console.log(it));
+        node.summary(4, null).forEach(it => console.log(it));
 
         expect(parsedNodes.length)
             .to
@@ -110,14 +111,14 @@ describe('asn1der',
         const parsedNodes = parseDER(pemToDER(rsaTeePem0));
         const node = parsedNodes[0];
 
-        const swEnfAtt = node.get('0.7.0.1.1');
-        console.log(swEnfAtt.toString());
-        swEnfAtt.reparse();
+        // SW enforced
+        node.get('0.7.0.1.1').reparse();
 
-        //node.get('1.3.6.1.4.1.11129.2.1.17'
+        // TODO reparse known extensions
+        // node.get('1.3.6.1.4.1.11129.2.1.17'
 
         //console.log(node.toString());
-        node.summary().forEach(it => console.log(it));
+        node.summary(4, authorizationListLookup()).forEach(it => console.log(it));
 
         expect(parsedNodes.length)
             .to
