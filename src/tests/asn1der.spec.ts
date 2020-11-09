@@ -12,9 +12,13 @@ describe('basic parsing of a valid X.509 cert should succeed, returning a single
   () => { 
     it('should return true', () => { 
 
-      const parsed = parseDER(Buffer.from(referenceX509Hex, 'hex'));
+      const parsedNodes = parseDER(Buffer.from(referenceX509Hex, 'hex'));
+      const node = parsedNodes[0];
 
-      expect(parsed.length)
+      //console.log(node.toString());
+      node.summary().forEach(console.log);
+
+      expect(parsedNodes.length)
         .to
         .equal(1); 
   }); 

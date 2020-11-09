@@ -150,13 +150,13 @@ export const parseDER = (
         ? parseDER(residualRemainder, indent)
         : [];
 
-    const self = {
-        raw: der,
+    const self = new Asn1Node(
+        der,
         identifier,
         length,
         content,
         children,
-    };
+    );
 
     return [
         self,
