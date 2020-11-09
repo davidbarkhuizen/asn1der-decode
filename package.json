@@ -1,11 +1,12 @@
 {
-  "name": "asn1der",
+  "name": "@indrajala/asn1der",
   "version": "0.0.1",
   "description": "parse ASN.1 DER structures",
-  "main": "",
+  "main": "index.js",
   "scripts": {
     "dev": "tsc && node dist/asn1der.js",
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
+    "build-test": "tsc && mocha -r ts-node/register src/**/*.spec.ts",
     "lint": "eslint . --ext .ts",
     "lint-fix": "eslint . --ext .ts --fix"
   },
@@ -14,12 +15,13 @@
     "url": "github.com:davidbarkhuizen/asn1der.git"
   },
   "keywords": [
-    "asn1",
-    "der",
-    "tlv"
+    "ASN.1",
+    "DER",
+    "X.690",
+    "TLV"
   ],
   "author": "david barkhuizen",
-  "license": "UNLICENSED",
+  "license": "MPL-2.0",
   "devDependencies": {
     "@types/mocha": "^8.0.3",
     "@types/node": "^14.14.6",

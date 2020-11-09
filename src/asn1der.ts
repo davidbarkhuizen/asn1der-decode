@@ -3,6 +3,16 @@ import { Asn1Node } from "./model/Asn1Node";
 import { Asn1Construction } from "./model/enums";
 import { IAsn1Identifier } from "./model/interfaces";
 
+export const pemToDER = (pem: string): Buffer => {
+    
+    const b64 = pem
+        .replace('-----BEGIN CERTIFICATE-----', '')
+        .replace('-----END CERTIFICATE-----', '')
+        .replace('\n', '');
+    
+    return Buffer.from(b64, 'base64');
+};
+
 export const parseIdentifer = (raw: Buffer): {
     identifier: IAsn1Identifier,
     lengthValueRemainder: Buffer
