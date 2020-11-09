@@ -3,6 +3,8 @@ import { asn1TagDescription } from "./descriptions";
 import { Asn1Tag } from "./enums";
 import { IAsn1Identifier } from "./interfaces";
 
+import { x509OIDs } from './oid';
+
 export class Asn1Node {
 
     public raw: Buffer;
@@ -35,16 +37,26 @@ export class Asn1Node {
             ? tagDescription
             : `${this.identifier.tagNumber}`;
 
-        const contentStr = (this.identifier.tagNumber == Asn1Tag.ObjectIdentifier)
+        const oidStr = (this.identifier.tagNumber == Asn1Tag.ObjectIdentifier)
             ? parseOID(this.content)
-            : '0x' + this.content.toString('hex');
-        
-        const limit = 20;
-        const contentLabel = (contentStr.length > limit)
-            ? `${contentStr.substring(0, 20)}...`
-            : contentStr;
+            : 'badly formed OID';
 
-        return `[${label}] - ${contentLabel}`;
+        const oidDescription = (x509OIDs.has(oidStr))
+            ? x509OIDs.get(oidStr)
+            : 'unknown OID';
+
+        const contentHex = this.content.toString('hex');
+
+        const hexLimit = 20;
+        const cleanContentHex = (contentHex.length > hexLimit)
+            ? contentHex.substring(0, hexLimit) + '...'
+            : contentHex;
+
+        const contentStr = (this.identifier.tagNumber == Asn1Tag.ObjectIdentifier)
+            ? `${oidStr} (${oidDescription})`
+            : '0x' + cleanContentHex;
+        
+        return `[${label}] - ${contentStr}`;
     }
 
     public summary = (indent = 4): Array<string> => {

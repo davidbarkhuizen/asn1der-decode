@@ -155,17 +155,17 @@ export const parseOID = (b: Buffer): string => {
                 .map(it => it.padStart(8, '0'))
                 .map(it => it.substring(1));
 
-            //console.log(`sevenBitStrings: ${sevenBitStrings}`);
+        //console.log(`sevenBitStrings: ${sevenBitStrings}`);
 
-            const joined = sevenBitStrings.join('');
-            //console.log(`joined: ${joined}`);
+        const joined = sevenBitStrings.join('');
+        //console.log(`joined: ${joined}`);
 
-            const padded = joined.padStart(joined.length + ( 8 - (joined.length % 8)), '0');
-            //console.log(`padded: ${padded}`);
+        const padded = joined.padStart(joined.length + ( 8 - (joined.length % 8)), '0');
+        //console.log(`padded: ${padded}`);
 
-            const longFormOID = parseInt(padded, 2);
+        const longFormOID = parseInt(padded, 2);
 
-            nodes.push(longFormOID);
+        nodes.push(longFormOID);
         }
     }
 
