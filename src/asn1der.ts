@@ -1,6 +1,7 @@
 import { bitsAreSet, getStandAloneBitsValue } from "./bitwise";
-import { Asn1Construction, Asn1Tag, IAsn1Identifier } from "./model";
-import { asn1TagDescription } from "./model.description";
+import { Asn1Node } from "./model/Asn1Node";
+import { Asn1Construction } from "./model/enums";
+import { IAsn1Identifier } from "./model/interfaces";
 
 export const parseIdentifer = (raw: Buffer): {
     identifier: IAsn1Identifier,
@@ -111,7 +112,7 @@ export const parseLength = (
 export const parseDER = (
     der: Buffer,
     indent = 0
-): Record<string, unknown> => {
+): Array<Asn1Node> => {
 
     // console.log(der.toString('hex').substring(0, 20), "...");
 
@@ -122,13 +123,13 @@ export const parseDER = (
     // } #${identifier.tagNumber
     // } (${identifier.tagDescription})`);
 
-    const tagDescription = asn1TagDescription.has(identifier.tagNumber)
-        ? asn1TagDescription.get(identifier.tagNumber)
-        : null;
+    // const tagDescription = asn1TagDescription.has(identifier.tagNumber)
+    //     ? asn1TagDescription.get(identifier.tagNumber)
+    //     : null;
 
-    const label = (tagDescription != null)
-        ? tagDescription
-        : `#${identifier.tagNumber}`;
+    // const label = (tagDescription != null)
+    //     ? tagDescription
+    //     : `${identifier.tagNumber}`;
 
     // parse length
 
@@ -137,25 +138,28 @@ export const parseDER = (
     const content = contentRemainder.subarray(0, length);
     const residualRemainder = contentRemainder.subarray(length);
 
-    console.log(`${'  '.repeat(indent)}${label}  ${content.toString('hex').substring(0, 60)}`);
+    // console.log(`${'  '.repeat(indent)}[${label}]  ${content.toString('hex').substring(0, 60)}`);
 
     // console.log(`content: ${content.toString('hex')}`);
     
-    if (identifier.construction == Asn1Construction.Constructed) {
-        // console.log('parsing children of constructed element');
-        // console.log('='.repeat(80));
-        parseDER(content, indent + 1);
-    } else {
-        if (identifier.tagNumber == Asn1Tag.ObjectIdentifier) {
-            //parseOID(contentHex.hexToUBytes())
-        }
-    }
+    const children = (identifier.construction == Asn1Construction.Constructed)
+        ? parseDER(content, indent + 1)
+        : [];
 
-    if (residualRemainder.length > 0) {
-        // console.log('parsing next item in current constructed element');
-        // console.log('-'.repeat(80));
-        parseDER(residualRemainder, indent);
-    }
+    const peers = (residualRemainder.length > 0)
+        ? parseDER(residualRemainder, indent)
+        : [];
 
-    return {};
+    const self = {
+        raw: der,
+        identifier,
+        length,
+        content,
+        children,
+    };
+
+    return [
+        self,
+        ...peers
+    ];
 };

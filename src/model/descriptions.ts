@@ -1,4 +1,4 @@
-import { Asn1Class, Asn1Construction, Asn1Tag } from "./model";
+import { Asn1Class, Asn1Construction, Asn1Tag } from "./enums";
 
 export const asn1ClassDescription = new Map<Asn1Class, string>([
     [Asn1Class.Universal, 'Universal'],

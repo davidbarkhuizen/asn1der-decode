@@ -49,19 +49,3 @@ export enum Asn1Tag {
     OID_IRI = 35,
     Relative_OID_IRI = 36
 }
-
-export interface IAsn1Identifier {
-    raw: Buffer,
-    class: Asn1Class,
-    construction: Asn1Construction,
-    tagNumber: number
-}
-
-export interface Element {
-    raw: Buffer,
-    identifier: IAsn1Identifier,
-    length: number,
-    content: Buffer
-    children: Array<Element>,
-    parent: Element
-}
