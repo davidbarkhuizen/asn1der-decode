@@ -15,4 +15,6 @@ export const x509OIDs = new Map<string, string>([
     ['2.5.4.6', 'id-at-countryName'],
     ['2.5.4.7', 'id-at-localityName'],
     ['2.5.4.8', 'id-at-stateOrProvinceName'],
+    ['2.5.4.12', 'id-at-title'],
+    ['1.3.6.1.4.1.11129.2.1.17', 'attestation'],
 ]);

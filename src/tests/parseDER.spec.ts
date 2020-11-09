@@ -17,7 +17,7 @@ AQABMA0GCSqGSIb3DQEBBQUAA4GBABS2TLuBeTPmcaTaUW/LCB2NYOy8GMdzR1mx
 Hn+GmxZA
 -----END CERTIFICATE-----`;
 
-const rsaTeePem = `-----BEGIN CERTIFICATE-----
+const rsaTeePem3 = `-----BEGIN CERTIFICATE-----
 MIIFYDCCA0igAwIBAgIJAOj6GWMU0voYMA0GCSqGSIb3DQEBCwUAMBsxGTAXBgNVBAUTEGY5MjAw
 OWU4NTNiNmIwNDUwHhcNMTYwNTI2MTYyODUyWhcNMjYwNTI0MTYyODUyWjAbMRkwFwYDVQQFExBm
 OTIwMDllODUzYjZiMDQ1MIICIjANBgkqhkiG9w0BAQEFAAOCAg8AMIICCgKCAgEAr7bHgiuxpwHs
@@ -45,6 +45,37 @@ CuPBLTdOLU8YRvMYdEvYebWHMpvwGCF6bAx3JBpIeOQ1wDB5y0USicV3YgYGmi+NZfhA4URSh77Y
 d6uuJOJENRaNVTzk
 -----END CERTIFICATE-----`;
 
+const rsaTeePem0 = `-----BEGIN CERTIFICATE-----
+MIIGCDCCBHCgAwIBAgIBATANBgkqhkiG9w0BAQsFADApMRkwFwYDVQQFExAyZGM1OGIyZDFhMjQx
+MzI2MQwwCgYDVQQMDANURUUwIBcNNzAwMTAxMDAwMDAwWhgPMjEwNjAyMDcwNjI4MTVaMB8xHTAb
+BgNVBAMMFEFuZHJvaWQgS2V5c3RvcmUgS2V5MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKC
+AQEApNVcnyN40MANMbbo2nMGNq2NNysDSjfLm0W3i6wPKf0ffCYkhWM4dCmQKKf50uAZTBeTit4c
+NwXeZn3qellMlOsIN3Qc384rfN/8cikrRvUAgibz0Jy7STykjwa7x6tKwqITxbO8HqAhKo8/BQXU
+xzrOdIg5ciy+UM7Vgh7a7ogen0KL2iGgrsalb1ti7Vlzb6vIJ4WzIC3TGD2sCkoPahghwqFDZZCo
+/FzaLoNY0jAUX2mL+kf8aUaoxz7xA9FTvgara+1pLBR1s4c8xPS2HdZipcVXWfey0wujv1VAKs4+
+tXjKlHkYBHBBceEjxUtEmrapSQEdpHPv7Xh9Uanq4QIDAQABo4ICwTCCAr0wDgYDVR0PAQH/BAQD
+AgeAMIICqQYKKwYBBAHWeQIBEQSCApkwggKVAgEDCgEBAgEECgEBBANhYmMEADCCAc2/hT0IAgYB
+ZOYGEYe/hUWCAbsEggG3MIIBszGCAYswDAQHYW5kcm9pZAIBHTAZBBRjb20uYW5kcm9pZC5rZXlj
+aGFpbgIBHTAZBBRjb20uYW5kcm9pZC5zZXR0aW5ncwIBHTAZBBRjb20ucXRpLmRpYWdzZXJ2aWNl
+cwIBHTAaBBVjb20uYW5kcm9pZC5keW5zeXN0ZW0CAR0wHQQYY29tLmFuZHJvaWQuaW5wdXRkZXZp
+Y2VzAgEdMB8EGmNvbS5hbmRyb2lkLmxvY2FsdHJhbnNwb3J0AgEdMB8EGmNvbS5hbmRyb2lkLmxv
+Y2F0aW9uLmZ1c2VkAgEdMB8EGmNvbS5hbmRyb2lkLnNlcnZlci50ZWxlY29tAgEdMCAEG2NvbS5h
+bmRyb2lkLndhbGxwYXBlcmJhY2t1cAIBHTAhBBxjb20uZ29vZ2xlLlNTUmVzdGFydERldGVjdG9y
+AgEdMCIEHWNvbS5nb29nbGUuYW5kcm9pZC5oaWRkZW5tZW51AgEBMCMEHmNvbS5hbmRyb2lkLnBy
+b3ZpZGVycy5zZXR0aW5ncwIBHTEiBCAwGqPLCBE0UBxF8UIqvGbCQiT9Xe1f3I8X5pcXb9hmqjCB
+rqEIMQYCAQICAQOiAwIBAaMEAgIIAKUFMQMCAQSmCDEGAgEDAgEFv4FIBQIDAQABv4N3AgUAv4U+
+AwIBAL+FQEwwSgQgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAQAKAQIEIHKNsSdP
+HxzxVx3kOAsEilVKxKOA529TVQg1KQhKk3gBv4VBAwIBAL+FQgUCAwMUs7+FTgUCAwMUs7+FTwUC
+AwMUszANBgkqhkiG9w0BAQsFAAOCAYEAJMIuzdNUdfrE6sIdmsnMn/scSG2odbphj8FkX9JGdF2S
+OT599HuDY9qhvkru2Dza4sLKK3f4ViBhuR9lpfeprKvstxbtBO7jkLYfVn0ZRzHRHVEyiW5IVKh+
+qOXVJ9S1lMShOTlsaYJytLKIlcrRAZBEXZiNbzTuVh1CH6X9Ni1dog14snm+lcOeORdL9fht2CHa
+u/caRnpWiZbjoAoJp0O89uBrRkXPpln51+3jPY6AFny30grNAvKguauDcPPhNV1yR+ylSsQi2gm3
+Rs4pgtlxFLMfZLgT0cbkl+9zk/QUqlpBP8ftUBsOI0ARr8xhFN3cvq9kXGLtJ9hEP9PRaflAFREk
+DK3IBIbVcAFZBFoAQOdE9zy0+F5bQrznPGaZg4Dzhcx33qMDUTgHtWoy+k3ePGQMEtmoTTLgQywW
+OIkXEoFqqGi9GKJXUT1KYi5NsigaYqu7FoN4Qsvs61pMUEfZSPP2AFwkA8uNFbmb9uxcxaGHCA8i
+3i9VM6yOLIrP
+-----END CERTIFICATE-----`;
+
 describe('asn1der', 
   () => { 
     
@@ -63,8 +94,27 @@ describe('asn1der',
 
     it('basic parsing of a valid X.509 cert should succeed, returning a single node', () => { 
 
-        const parsedNodes = parseDER(pemToDER(rsaTeePem));
+        const parsedNodes = parseDER(pemToDER(rsaTeePem3));
         const node = parsedNodes[0];
+
+        //console.log(node.toString());
+        node.summary().forEach(it => console.log(it));
+
+        expect(parsedNodes.length)
+            .to
+            .equal(1); 
+    }); 
+
+    it('basic parsing of a valid X.509 cert should succeed, returning a single node', () => { 
+
+        const parsedNodes = parseDER(pemToDER(rsaTeePem0));
+        const node = parsedNodes[0];
+
+        const swEnfAtt = node.get('0.7.0.1.1');
+        console.log(swEnfAtt.toString());
+        swEnfAtt.reparse();
+
+        //node.get('1.3.6.1.4.1.11129.2.1.17'
 
         //console.log(node.toString());
         node.summary().forEach(it => console.log(it));
