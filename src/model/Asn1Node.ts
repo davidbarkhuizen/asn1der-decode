@@ -10,10 +10,10 @@ export class Asn1Node {
     children: Array<Asn1Node>;
 
     constructor(
-            raw: Buffer,
-            identifier: IAsn1Identifier,
-            length: number,
-            content: Buffer,
+        raw: Buffer,
+        identifier: IAsn1Identifier,
+        length: number,
+        content: Buffer,
         children: Array<Asn1Node>
     ) {
         this.raw = raw;
@@ -48,12 +48,11 @@ export class Asn1Node {
         const childrenReport = [];
 
         this.children
-            .forEach(child => childrenReport                
-                .push(...child.summary()));
+            .forEach(child => childrenReport.push(...child.summary()));
         
         return [
             this.toString(),
             ...childrenReport.map(line => ' '.repeat(indent) + line)
-            ];
+        ];
     }
 }

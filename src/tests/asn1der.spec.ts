@@ -16,7 +16,7 @@ describe('basic parsing of a valid X.509 cert should succeed, returning a single
       const node = parsedNodes[0];
 
       //console.log(node.toString());
-      node.summary().forEach(console.log);
+      node.summary().forEach(it => console.log(it));
 
       expect(parsedNodes.length)
         .to
