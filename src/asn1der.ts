@@ -1,6 +1,6 @@
 import { bitsAreSet, getStandAloneBitsValue } from "./bitwise";
 import { Asn1Construction, Asn1Tag, IAsn1Identifier } from "./model";
-import { asn1ClassShortDesc, asn1ConstructionShortDesc, asn1TagDescription } from "./model.description";
+import { asn1TagDescription } from "./model.description";
 
 export const parseIdentifer = (raw: Buffer): {
     identifier: IAsn1Identifier,
@@ -11,16 +11,8 @@ export const parseIdentifer = (raw: Buffer): {
     //console.log(`b0: ${b0.toString()}d 0x${b0.toString(16)} ${b0.toString(2).padStart(8, '0')}b`);
 
     const klass = getStandAloneBitsValue(b0, [7,8]);
-    const classDescription = asn1ClassShortDesc.get(klass);
-    //console.log(`class ${classDescription}`);
-
     const construction = getStandAloneBitsValue(b0, [6]);
-    const constructionDescription = asn1ConstructionShortDesc.get(construction);
-    //console.log(`construction ${constructionDescription}`);
-
     const initialOctetTagNumber = getStandAloneBitsValue(b0, [1,2,3,4,5]);
-    //const initialOctetTagDescription = asn1TagDescription.get(initialOctetTagNumber);
-    //console.log(`initial tag: ${initialOctetTagNumber} => ${initialOctetTagDescription}`);
 
     let remainder = raw.subarray(1);
 
@@ -68,10 +60,6 @@ export const parseIdentifer = (raw: Buffer): {
     const tagNumber = (isLongFormTag)
         ? longFormTagNumber
         : initialOctetTagNumber;
-
-    const tagDescription = (asn1TagDescription.has(tagNumber))
-        ? asn1TagDescription.get(tagNumber)
-        : null;
     
     //console.log(`final tag number: ${tagNumber} => ${tagDescription}`);
 
@@ -79,11 +67,8 @@ export const parseIdentifer = (raw: Buffer): {
         identifier:{
             raw: Buffer.from([b0]),
             class: klass,
-            classDescription,
             construction,
-            constructionDescription,
             tagNumber,
-            tagDescription
         },
         lengthValueRemainder: remainder
     };
@@ -137,9 +122,13 @@ export const parseDER = (
     // } #${identifier.tagNumber
     // } (${identifier.tagDescription})`);
 
-    const label = (identifier.tagDescription != null)
-        ? identifier.tagDescription
-        : `[${identifier.tagNumber}]`;
+    const tagDescription = asn1TagDescription.has(identifier.tagNumber)
+        ? asn1TagDescription.get(identifier.tagNumber)
+        : null;
+
+    const label = (tagDescription != null)
+        ? tagDescription
+        : `#${identifier.tagNumber}`;
 
     // parse length
 

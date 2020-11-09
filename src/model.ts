@@ -53,9 +53,15 @@ export enum Asn1Tag {
 export interface IAsn1Identifier {
     raw: Buffer,
     class: Asn1Class,
-    classDescription: string,
     construction: Asn1Construction,
-    constructionDescription: string,
-    tagNumber: number,
-    tagDescription: string
+    tagNumber: number
+}
+
+export interface Element {
+    raw: Buffer,
+    identifier: IAsn1Identifier,
+    length: number,
+    content: Buffer
+    children: Array<Element>,
+    parent: Element
 }
