@@ -3,17 +3,7 @@ import { Asn1Node } from "./model/Asn1Node";
 import { Asn1Construction } from "./model/enums";
 import { IAsn1Identifier } from "./model/interfaces";
 
-export const pemToDER = (pem: string): Buffer => {
-    
-    const b64 = pem
-        .replace('-----BEGIN CERTIFICATE-----', '')
-        .replace('-----END CERTIFICATE-----', '')
-        .replace('\n', '');
-    
-    return Buffer.from(b64, 'base64');
-};
-
-export const parseIdentifer = (raw: Buffer): {
+const parseIdentifer = (raw: Buffer): {
     identifier: IAsn1Identifier,
     lengthValueRemainder: Buffer
 } => {
@@ -50,6 +40,8 @@ export const parseIdentifer = (raw: Buffer): {
 
         remainder = remainder.subarray(tagByteCount);
 
+        // TODO common with parseOID ?
+
         const sevenBitStrings = [...tagBytes]
             .map(it => it.toString(2))
             .map(it => it.padStart(8, '0'))
@@ -85,7 +77,7 @@ export const parseIdentifer = (raw: Buffer): {
     };
 };
 
-export const parseLength = (
+const parseLength = (
     raw: Buffer
 ): {
     length: number,
@@ -117,6 +109,67 @@ export const parseLength = (
     //console.log(`length ${length}`);
 
     return { length, contentRemainder: remainder };
+};
+
+export const pemToDER = (pem: string): Buffer => {
+    
+    const b64 = pem
+        .replace('-----BEGIN CERTIFICATE-----', '')
+        .replace('-----END CERTIFICATE-----', '')
+        .replace('\n', '');
+    
+    return Buffer.from(b64, 'base64');
+};
+
+export const parseOID = (b: Buffer): string => {
+
+   const firstByte = b.readInt8(0);
+
+   const firstNodeValue = Math.floor(firstByte / 40);
+   const secondNodeValue = firstByte - (firstNodeValue * 40);
+
+   const nodes = [firstNodeValue, secondNodeValue];
+
+   let remainder = b.subarray(1);
+
+    while (remainder.length > 0) {
+
+        const isLongForm = bitsAreSet(remainder.readUInt8(0), [8]);
+
+        if (!isLongForm) {
+            nodes.push(remainder.readUInt8(0));
+            remainder = remainder.subarray(1);
+        } else {
+
+            const head = [];
+            while (bitsAreSet(remainder.readUInt8(0), [8])) {
+                head.push(remainder.readUInt8(0));
+                remainder = remainder.subarray(1);
+            }
+            
+            head.push(remainder.readUInt8(0));
+            remainder = remainder.subarray(1);
+
+            const sevenBitStrings = [...head]
+                .map(it => it.toString(2))
+                .map(it => it.padStart(8, '0'))
+                .map(it => it.substring(1));
+
+            //console.log(`sevenBitStrings: ${sevenBitStrings}`);
+
+            const joined = sevenBitStrings.join('');
+            //console.log(`joined: ${joined}`);
+
+            const padded = joined.padStart(joined.length + ( 8 - (joined.length % 8)), '0');
+            //console.log(`padded: ${padded}`);
+
+            const longFormOID = parseInt(padded, 2);
+
+            nodes.push(longFormOID);
+        }
+    }
+
+    return nodes.join('.');
 };
 
 export const parseDER = (

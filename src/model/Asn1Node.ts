@@ -78,7 +78,7 @@ export class Asn1Node {
             : firstStepTarget.get(steps.slice(1).join('.'));
     }
 
-    public parseContent = (): void => {
+    public reparse = (): void => {
         this.children = parseDER(this.content);
     }
 }

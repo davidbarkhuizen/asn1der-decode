@@ -39,7 +39,7 @@ describe('asn1der',
     //     const root = parsedNodes[0];
 
     //     // softwareEnforced - AttestationApplicationId
-    //     root.get('6.#709.0').parseContent();
+    //     root.get('6.#709.0').reparse();
 
     //     root.summary().forEach(it => console.log(it));
 
