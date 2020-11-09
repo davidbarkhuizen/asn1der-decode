@@ -54,7 +54,9 @@ export class Asn1Node {
 
         const contentStr = (this.identifier.tagNumber == Asn1Tag.ObjectIdentifier)
             ? `${oidStr} (${oidDescription})`
-            : '0x' + cleanContentHex;
+            : (this.identifier.tagNumber == Asn1Tag.UTF8String)
+                ? this.content.toString('utf-8')
+                : '0x' + cleanContentHex;
         
         return `[${label}] - ${contentStr}`;
     }
