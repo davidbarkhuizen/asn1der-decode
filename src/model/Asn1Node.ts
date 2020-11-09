@@ -87,7 +87,9 @@ export class Asn1Node {
                             ? parseInt(contentHex, 16).toString()
                             : (this.identifier.tagNumber == Asn1Tag.IA5String)
                                 ? this.content.toString('ascii')
-                                : '0x' + cleanContentHex;
+                                : (this.identifier.tagNumber == Asn1Tag.Boolean)
+                                    ? !(this.content.readInt8(0) == 0)
+                                    : '0x' + cleanContentHex;
         
         return `[${label}] - ${contentStr}`;
     }
