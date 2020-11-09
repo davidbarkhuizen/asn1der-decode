@@ -16,7 +16,7 @@ export const parseUtcString = (s: string): Date => {
     const mins = parseInt(s.substring(8, 10));
     const seconds = parseInt(s.substring(10, 12));
 
-    console.log(`${yyyy}/${mm}/${dd} ${hours}:${mins}:${seconds}`);
+    // console.log(`${yyyy}/${mm}/${dd} ${hours}:${mins}:${seconds}`);
 
     return new Date(Date.UTC(
         yyyy,
@@ -83,7 +83,9 @@ export class Asn1Node {
                     ? this.content.toString('ascii')
                     : (this.identifier.tagNumber == Asn1Tag.UTCTime)
                         ? parseUtcString(this.content.toString('ascii')).toString()
-                        : '0x' + cleanContentHex;
+                        : (this.identifier.tagNumber == Asn1Tag.Integer)
+                            ? parseInt(contentHex, 16).toString()
+                            : '0x' + cleanContentHex;
         
         return `[${label}] - ${contentStr}`;
     }
