@@ -1,5 +1,6 @@
-import { parseDER } from "../asn1der";
+import { parseDER, parseOID } from "../asn1der";
 import { asn1TagDescription } from "./descriptions";
+import { Asn1Tag } from "./enums";
 import { IAsn1Identifier } from "./interfaces";
 
 export class Asn1Node {
@@ -34,12 +35,14 @@ export class Asn1Node {
             ? tagDescription
             : `${this.identifier.tagNumber}`;
 
-        const contentHex = this.content.toString('hex');
+        const contentStr = (this.identifier.tagNumber == Asn1Tag.ObjectIdentifier)
+            ? parseOID(this.content)
+            : '0x' + this.content.toString('hex');
         
         const limit = 20;
-        const contentLabel = (contentHex.length > limit)
-            ? `${contentHex.substring(0, 20)}...`
-            : contentHex;
+        const contentLabel = (contentStr.length > limit)
+            ? `${contentStr.substring(0, 20)}...`
+            : contentStr;
 
         return `[${label}] - ${contentLabel}`;
     }
