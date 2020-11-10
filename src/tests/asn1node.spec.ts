@@ -8,9 +8,10 @@ describe('Asn1Node',
     () => { 
 
         const node = parseDER(Buffer.from(hex, 'hex'))[0];
-        //node.get('0.7.0.1.1').reparse();
-
-        node.summary(4, null).forEach(it => console.log(it));
+        
+        const setNode = node.get('7.0.0');
+        console.log(setNode.toString());
+        console.log(setNode.getSetElementsAsIntegers());
 
         it('getSetElements yields the child elements', () => { 
             expect(true)
