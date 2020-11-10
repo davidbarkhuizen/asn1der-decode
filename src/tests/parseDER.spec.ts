@@ -114,11 +114,11 @@ describe('parseDER',
         // SW enforced
         node.get('0.7.0.1.1').reparse();
 
-        // TODO reparse known extensions
+        // TODO reparse extension for OID
         // node.get('1.3.6.1.4.1.11129.2.1.17'
 
         //console.log(node.toString());
-        // node.summary(4, authorizationListLookup()).forEach(it => console.log(it));
+        //node.summary(4, authorizationListLookup()).forEach(it => console.log(it));
 
         expect(parsedNodes.length)
             .to

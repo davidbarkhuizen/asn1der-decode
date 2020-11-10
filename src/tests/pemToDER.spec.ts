@@ -1,4 +1,4 @@
-import { certs, csrs, privateKeys } from './data/x509FM4DD';
+import { certs, csrs, privateKeys } from './data/pem/x509FM4DD';
 import { expect } from 'chai';
 import 'mocha';
 import { pemToDER } from '../asn1der';

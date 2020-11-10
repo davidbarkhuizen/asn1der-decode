@@ -213,9 +213,20 @@ export const parseDER = (
 
     // console.log(`content: ${content.toString('hex')}`);
     
-    const children = (identifier.construction == Asn1Construction.Constructed)
-        ? parseDER(content)
-        : [];
+    const children = (identifier.construction == Asn1Construction.Primitive)
+        ? []
+        : (content.length > 0)
+            ? parseDER(content)
+            : [];
+
+    // if (
+    //     (identifier.construction == Asn1Construction.Constructed)
+    //     &&
+    //     (content.length == 0)
+    // ) {
+    //     console.log(`constructed element with zero length content:`);
+    //     console.log(identifier);
+    // }
 
     const peers = (residualRemainder.length > 0)
         ? parseDER(residualRemainder)
