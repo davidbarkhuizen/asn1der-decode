@@ -86,7 +86,7 @@ export class Asn1Node {
         this.children = children;
     }
 
-    public toString = (tagNumberLookup: Map<number, string>): string => {
+    public toString = (tagNumberLookup: Map<number, string> = null): string => {
 
         const tagNumberLookupIsRelevant = [
             Asn1Class.Application, 
@@ -126,7 +126,7 @@ export class Asn1Node {
             ? contentHex.substring(0, hexLimit) + '...'
             : contentHex;
 
-        const contentStr = (this.identifier.tagNumber == Asn1Tag.ObjectIdentifier)
+        const universalContentStr = (this.identifier.tagNumber == Asn1Tag.ObjectIdentifier)
             ? `${oidStr} (${oidDescription})`
             : (this.identifier.tagNumber == Asn1Tag.UTF8String)
                 ? this.getUTF8String()
@@ -144,6 +144,11 @@ export class Asn1Node {
                                         ? this.getGeneralizedTime().toString()
                                         : cleanContentHex;
         
+
+        const contentStr = (this.identifier.class == Asn1Class.Universal)
+            ? universalContentStr
+            : cleanContentHex;
+
         return `${label} - ${contentStr}`;
     }
 
