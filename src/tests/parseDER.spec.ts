@@ -14,7 +14,7 @@ describe('parseDER',
             .equal(1); 
     }); 
 
-    it('reparsing of octet string nodes which are valid DER should increase the child count', () => { 
+    it('reparsing of an octet string node which is valid DER should increase its child count', () => { 
 
         const node = parseDER(pemToDER(rsaTEE[0]))[0];
 
