@@ -1,9 +1,9 @@
 {
   "name": "@indrajala/asn1der",
-  "version": "0.0.5",
+  "version": "0.0.6",
   "description": "parse ASN.1 DER structures",
-  "main": "index.js",
-  "types": "index.d.ts",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
   "scripts": {
     "dev": "tsc && node dist/asn1der.js",
     "build": "tsc",
