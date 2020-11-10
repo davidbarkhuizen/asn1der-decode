@@ -1,6 +1,6 @@
 import { expect } from 'chai';
 import { parseDER, pemToDER } from '../asn1der';
-import { authorizationListLookup } from '../model/google';
+// import { authorizationListLookup } from '../model/google';
 import { rsaTEE } from './data/pem/google';
 
 describe('play', 
@@ -10,9 +10,9 @@ describe('play',
             
             const root = parseDER(pemToDER(rsaTEE[0]))[0];
 
-            root
-                .summary(4, authorizationListLookup())
-                .forEach(line => console.log(line));
+            // root
+            //     .summary(4, authorizationListLookup())
+            //     .forEach(line => console.log(line));
             
             expect(true)
                 .to
