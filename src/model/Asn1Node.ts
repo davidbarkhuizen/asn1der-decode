@@ -20,13 +20,49 @@ export const parseUtcString = (s: string): Date => {
 
     return new Date(Date.UTC(
         yyyy,
-        mm,
+        mm - 1,
         dd,
         hours,
         mins,
         seconds
     ));
 };
+
+// YYYYMMDD000000Z
+// YYYY MM DD 00 00 00 Z
+// e.g.
+// 19920521000000Z
+// 19920622123421Z
+// 19920722132100.3Z
+//
+export const parseGeneralizedTimeString = (s: string): Date => {
+
+    const yyyy = parseInt(s.substring(0, 4));
+    const mm = parseInt(s.substring(4, 6));
+    const dd = parseInt(s.substring(6, 8));
+
+    const hours = parseInt(s.substring(8, 10));
+    const mins = parseInt(s.substring(10, 12));
+    const seconds = parseInt(s.substring(12, 14));
+
+    const hasFractionalSeconds = s[14] == '.';
+    const ms = (hasFractionalSeconds)
+        ? parseInt(s.substring(15, s.length - 1)) * 1000
+        : 0;
+
+    // console.log(`${yyyy}/${mm}/${dd} ${hours}:${mins}:${seconds}`);
+
+    return new Date(Date.UTC(
+        yyyy,
+        mm - 1,
+        dd,
+        hours,
+        mins,
+        seconds,
+        ms
+    ));
+};
+
 
 export class Asn1Node {
 
@@ -104,7 +140,9 @@ export class Asn1Node {
                                 ? this.getIA5String()
                                 : (this.identifier.tagNumber == Asn1Tag.Boolean)
                                     ? this.getBoolean()
-                                    : cleanContentHex;
+                                    : (this.identifier.tagNumber == Asn1Tag.GeneralizedTime)
+                                        ? this.getGeneralizedTime().toString()
+                                        : cleanContentHex;
         
         return `${label} - ${contentStr}`;
     }
@@ -117,6 +155,9 @@ export class Asn1Node {
 
     public getUTCTime = (): Date =>
         parseUtcString(this.content.toString('ascii'));
+    
+    public getGeneralizedTime = (): Date =>
+        parseGeneralizedTimeString(this.content.toString('ascii'));
 
     public getIA5String = (): string =>
         this.content.toString('ascii');
