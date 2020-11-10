@@ -1,11 +1,15 @@
 {
-  "compilerOptions": {
-    "module": "commonjs",
-    "esModuleInterop": true,
-    "target": "es6",
-    "moduleResolution": "node",
-    "sourceMap": true,
-    "outDir": "dist"
-  },
-  "lib": [ "es2019", "es2019.array" ]
+    "declaration": true,
+    "compilerOptions": {
+        "module": "commonjs",
+        "esModuleInterop": true,
+        "target": "es6",
+        "moduleResolution": "node",
+        "sourceMap": true,
+        "outDir": "dist"
+    },
+    "lib": [ 
+        "es2019", 
+        "es2019.array" 
+    ]
 }

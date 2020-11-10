@@ -3,8 +3,10 @@
   "version": "0.0.2",
   "description": "parse ASN.1 DER structures",
   "main": "index.js",
+  "types": "index.d.ts",
   "scripts": {
     "dev": "tsc && node dist/asn1der.js",
+    "build": "tsc",
     "test": "mocha -r ts-node/register src/**/*.spec.ts",
     "build-test": "tsc && mocha -r ts-node/register src/**/*.spec.ts",
     "lint": "eslint . --ext .ts",
@@ -17,8 +19,7 @@
   "keywords": [
     "ASN.1",
     "DER",
-    "X.690",
-    "TLV"
+    "X.690"
   ],
   "author": "david barkhuizen",
   "license": "MPL-2.0",
