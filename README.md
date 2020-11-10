@@ -1,2 +1,4 @@
 # asn1der
-parse ASN.1 DER structures
+parse ASN.1 DER structures  
+
+THIS PACKAGE IS NOT INTENDED FOR EXTERNAL USE YET, AS IT IS NOT YET STABLE.  

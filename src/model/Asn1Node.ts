@@ -213,7 +213,9 @@ export class Asn1Node {
 
         return (steps.length == 1)
             ? firstStepTarget
-            : firstStepTarget.get(steps.slice(1).join('.'));
+            : (firstStepTarget)
+                ? firstStepTarget.get(steps.slice(1).join('.'))
+                : null;
     }
 
     public reparse = (): void => {
