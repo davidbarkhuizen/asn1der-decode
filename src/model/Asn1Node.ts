@@ -173,6 +173,9 @@ export class Asn1Node {
     public getInteger = (): number =>
         parseInt(this.content.toString('hex'), 16);
 
+    public getSetElementsAsIntegers = (): Array<number> => 
+        this.children.map(child => child.getInteger())
+
     public getContentAsHex = (): string =>
         this.content.toString('hex');
 
