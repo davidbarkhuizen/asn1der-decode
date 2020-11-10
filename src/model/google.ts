@@ -43,13 +43,13 @@ export const authorizationListLookup = (): Map<number, string> => {
 
     for (const value in AuthorizationList) {
 
-        console.log(Number(value), AuthorizationList[value]);
+        // console.log(Number(value), AuthorizationList[value]);
 
         if (typeof AuthorizationList[value] !== "string") {
             continue;
         }
 
-        console.log('x', Number(value), AuthorizationList[value]);
+        // console.log('x', Number(value), AuthorizationList[value]);
     
         lookup.set(Number(value), AuthorizationList[value]);
     }

@@ -58,8 +58,8 @@ export class Asn1Node {
             Asn1Class.Private
         ].includes(this.identifier.class);
 
-        console.log(`tag number: ${this.identifier.tagNumber}`);
-        console.log(`lookup has: ${tagNumberLookup?.has(this.identifier.tagNumber)}`);
+        // console.log(`tag number: ${this.identifier.tagNumber}`);
+        // console.log(`lookup has: ${tagNumberLookup?.has(this.identifier.tagNumber)}`);
 
         const tagDescription = (
                 (tagNumberLookup != null) 

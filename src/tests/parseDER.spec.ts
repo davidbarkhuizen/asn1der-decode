@@ -77,7 +77,7 @@ OIkXEoFqqGi9GKJXUT1KYi5NsigaYqu7FoN4Qsvs61pMUEfZSPP2AFwkA8uNFbmb9uxcxaGHCA8i
 3i9VM6yOLIrP
 -----END CERTIFICATE-----`;
 
-describe('asn1der', 
+describe('parseDER', 
   () => { 
     
     it('basic parsing of a valid X.509 cert should succeed, returning a single node', () => { 
@@ -86,7 +86,7 @@ describe('asn1der',
         const node = parsedNodes[0];
 
         //console.log(node.toString());
-        node.summary(4, null).forEach(it => console.log(it));
+        // node.summary(4, null).forEach(it => console.log(it));
 
         expect(parsedNodes.length)
             .to
@@ -99,14 +99,14 @@ describe('asn1der',
         const node = parsedNodes[0];
 
         //console.log(node.toString());
-        node.summary(4, null).forEach(it => console.log(it));
+        // node.summary(4, null).forEach(it => console.log(it));
 
         expect(parsedNodes.length)
             .to
             .equal(1); 
     }); 
 
-    it('basic parsing of a valid X.509 cert should succeed, returning a single node', () => { 
+    it('reparsing of octet string nodes which are valid ASN.1 DER structures should succeed', () => { 
 
         const parsedNodes = parseDER(pemToDER(rsaTeePem0));
         const node = parsedNodes[0];
@@ -118,26 +118,10 @@ describe('asn1der',
         // node.get('1.3.6.1.4.1.11129.2.1.17'
 
         //console.log(node.toString());
-        node.summary(4, authorizationListLookup()).forEach(it => console.log(it));
+        // node.summary(4, authorizationListLookup()).forEach(it => console.log(it));
 
         expect(parsedNodes.length)
             .to
             .equal(1); 
-    }); 
-
-    // it('it should be able to instruct a node to parse its content', () => { 
-
-    //     const parsedNodes = parseDER(Buffer.from(referenceX509Hex, 'hex'));
-    //     const root = parsedNodes[0];
-
-    //     // softwareEnforced - AttestationApplicationId
-    //     root.get('6.#709.0').reparse();
-
-    //     root.summary().forEach(it => console.log(it));
-
-    //     expect(1)
-    //         .to
-    //         .equal(1); 
-    // }); 
-
+    });
 });
