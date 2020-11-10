@@ -112,11 +112,20 @@ const parseLength = (
 };
 
 export const pemToDER = (pem: string): Buffer => {
+
+    const toRemove = [
+        '-----BEGIN CERTIFICATE-----',
+        '-----END CERTIFICATE-----',
+        '-----BEGIN RSA PRIVATE KEY-----',
+        '-----END RSA PRIVATE KEY-----',
+        '-----BEGIN CERTIFICATE REQUEST-----',
+        '-----END CERTIFICATE REQUEST-----',
+        '\n',
+        ' '
+    ];
     
-    const b64 = pem
-        .replace('-----BEGIN CERTIFICATE-----', '')
-        .replace('-----END CERTIFICATE-----', '')
-        .replace('\n', '');
+    const b64 = toRemove
+        .reduce((ac, token) => ac.replace(new RegExp(token, 'g'), ''), pem);
     
     return Buffer.from(b64, 'base64');
 };

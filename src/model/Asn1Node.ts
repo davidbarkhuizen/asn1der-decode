@@ -83,7 +83,7 @@ export class Asn1Node {
             ? x509OIDs.get(oidStr)
             : 'unknown OID';
 
-        const contentHex = this.getContentHex();
+        const contentHex = this.getContentAsHex();
 
         const hexLimit = 20;
         const cleanContentHex = (contentHex.length > hexLimit)
@@ -93,42 +93,42 @@ export class Asn1Node {
         const contentStr = (this.identifier.tagNumber == Asn1Tag.ObjectIdentifier)
             ? `${oidStr} (${oidDescription})`
             : (this.identifier.tagNumber == Asn1Tag.UTF8String)
-                ? this.getContentUTF8()
+                ? this.getUTF8String()
                 : (this.identifier.tagNumber == Asn1Tag.PrintableString)
-                    ? this.getContentPrintableString()
+                    ? this.getPrintableString()
                     : (this.identifier.tagNumber == Asn1Tag.UTCTime)
-                        ? this.getContentUTCTime().toString()
+                        ? this.getUTCTime().toString()
                         : (this.identifier.tagNumber == Asn1Tag.Integer)
-                            ? this.getContentInteger().toString()
+                            ? this.getInteger().toString()
                             : (this.identifier.tagNumber == Asn1Tag.IA5String)
-                                ? this.getContentIA5String()
+                                ? this.getIA5String()
                                 : (this.identifier.tagNumber == Asn1Tag.Boolean)
-                                    ? this.getContentBoolean()
+                                    ? this.getBoolean()
                                     : cleanContentHex;
         
         return `${label} - ${contentStr}`;
     }
 
-    public getContentUTF8 = (): string =>
+    public getUTF8String = (): string =>
         this.content.toString('utf-8');
 
-    public getContentPrintableString = (): string =>
+    public getPrintableString = (): string =>
         this.content.toString('ascii');
 
-    public getContentUTCTime = (): Date =>
+    public getUTCTime = (): Date =>
         parseUtcString(this.content.toString('ascii'));
 
-    public getContentIA5String = (): string =>
+    public getIA5String = (): string =>
         this.content.toString('ascii');
 
-    public getContentBoolean = (): boolean =>
+    public getBoolean = (): boolean =>
         !(this.content.readInt8(0) == 0);
 
-    public getContentHex = (): string =>
-        this.content.toString('hex');
-
-    public getContentInteger = (): number =>
+    public getInteger = (): number =>
         parseInt(this.content.toString('hex'), 16);
+
+    public getContentAsHex = (): string =>
+        this.content.toString('hex');
 
     public summary = (indent: number, tagNumberLookup: Map<number, string>): Array<string> => {
       
