@@ -1,3 +1,5 @@
+// source https://github.com/google/android-key-attestation/tree/master/server/examples
+
 export const rsaTEE = [
     `-----BEGIN CERTIFICATE-----
     MIIGCDCCBHCgAwIBAgIBATANBgkqhkiG9w0BAQsFADApMRkwFwYDVQQFExAyZGM1OGIyZDFhMjQx
