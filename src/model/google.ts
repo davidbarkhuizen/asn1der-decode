@@ -37,22 +37,10 @@ export enum AuthorizationList {
     bootPatchLevel = 719,
 }
 
-export const authorizationListLookup = (): Map<number, string> => {
-
-    const lookup = new Map<number, string>();
-
-    for (const value in AuthorizationList) {
-
-        // console.log(Number(value), AuthorizationList[value]);
-
-        if (typeof AuthorizationList[value] !== "string") {
-            continue;
-        }
-
-        // console.log('x', Number(value), AuthorizationList[value]);
-    
-        lookup.set(Number(value), AuthorizationList[value]);
+export const authorizationListLookup = new Map<number, string>();
+for (const value in AuthorizationList) {
+    if (typeof AuthorizationList[value] !== "string") {
+        continue;
     }
-
-    return lookup;
-};
+    authorizationListLookup.set(Number(value), AuthorizationList[value]);
+}
