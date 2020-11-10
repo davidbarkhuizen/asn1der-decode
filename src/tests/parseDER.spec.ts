@@ -18,9 +18,9 @@ describe('parseDER',
 
         const node = parseDER(pemToDER(rsaTEE[0]))[0];
 
-        const extNode = node.get('0.7.0.1.1');
-
         // SW enforced
+        const extNode = node.get('0.7.0.1.1');
+        
         const childCountBefore = extNode.children.length;
         extNode.reparse();
         const childCountAfter = extNode.children.length;
