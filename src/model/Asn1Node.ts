@@ -179,9 +179,13 @@ export class Asn1Node {
     public getSetElements = (): Array<Asn1Node> => 
         this.children
 
+    public getNull = (): boolean => 
+        this.identifier.tagNumber == Asn1Tag.Null;
+
     public getContentAsHex = (): string =>
         this.content.toString('hex');
 
+    // TODO fix argument order
     public summary = (indent: number, tagNumberLookup: Map<number, string>): Array<string> => {
       
         const childrenReport = [];
