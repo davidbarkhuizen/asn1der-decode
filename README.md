@@ -1,4 +1,3 @@
-# asn1der
-parse ASN.1 DER structures  
+# asn1der-decode
 
-THIS PACKAGE IS NOT INTENDED FOR EXTERNAL USE AS IT IS NOT YET STABLE.  
+decode ASN.1 DER structures  
