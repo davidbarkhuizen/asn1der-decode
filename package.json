@@ -35,6 +35,5 @@
     "typescript": "^4.0.5"
   },
   "dependencies": {
-    "nvm": "^0.0.4"
   }
 }
